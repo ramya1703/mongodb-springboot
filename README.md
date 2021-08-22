@@ -11,22 +11,22 @@ For the API implementation, we use two approaches:
 2. MongoTemplate - It is used for more control over filters, and also a good choice for aggregations. We will demonstrate update operation using this approach.
 
 # CRUD Examples using MongoRepository
-###To create a document (item) in MongoDB, use the save() method:
+### To create a document (item) in MongoDB, use the save() method:
 
-  groceryItemRepo.save(new GroceryItem("Dried Red Chilli", "Dried Whole Red Chilli", 2, "spices"));
+  `groceryItemRepo.save(new GroceryItem("Dried Red Chilli", "Dried Whole Red Chilli", 2, "spices"));`
   
-###To Read all the documents, use findAll() method:
-  groceryItemRepo.findAll().forEach(item-> item.getName(),item.getQuantity(),item.getCategory());
+### To Read all the documents, use findAll() method:
+  `groceryItemRepo.findAll().forEach(item-> item.getName(),item.getQuantity(),item.getCategory());`
   
-###To Read documents based on a particular field, like name or category, by specifying the query parameters:
-  @Query("{name:'?0'}")
+### To Read documents based on a particular field, like name or category, by specifying the query parameters:
+  `@Query("{name:'?0'}")
 	GroceryItem findItemByName(String name);
 	
 	@Query(value="{category:'?0'}", fields="{'name' : 1, 'quantity' : 1}")
 	List<GroceryItem> findAll(String category);
-  
-###To update a document using MongoRepository, we should retrieve the specific documents and save the new values. For example, to update a category, do the following:
-  List<GroceryItem> list = groceryItemRepo.findAll(category);
+  `
+### To update a document using MongoRepository, we should retrieve the specific documents and save the new values. For example, to update a category, do the following:
+  `List<GroceryItem> list = groceryItemRepo.findAll(category);
 		 
 	list.forEach(item -> {
 	   // Update the category in each document
@@ -35,18 +35,18 @@ For the API implementation, we use two approaches:
 		 
 	// Save all the items in database
 	List<GroceryItem> itemsUpdated = groceryItemRepo.saveAll(list);
-  
- ###To delete a document, use the delete method. For example, delete an item by ID using the deleteById() method:
-  groceryItemRepo.deleteById(id);
+  `
+ ### To delete a document, use the delete method. For example, delete an item by ID using the deleteById() method:
+  `groceryItemRepo.deleteById(id);`
 	
- #Update using MongoTemplate 
+ # Update using MongoTemplate 
  Updates using MongoTemplate are much easier with the out-of-box classes provided by MongoTemplate.
  Let us update the quantity of a particular item: 
-  Query query = new Query(Criteria.where("name").is(name));
+ ` Query query = new Query(Criteria.where("name").is(name));
 	Update update = new Update();
 	update.set("quantity", newQuantity);
 		
 	UpdateResult result = mongoTemplate.updateFirst(query, update, GroceryItem.class);
-  
+  `
 
 
